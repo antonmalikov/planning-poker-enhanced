@@ -344,6 +344,12 @@ const AverageComponent: React.FC<{ game: Game; players: Player[] }> = ({ game, p
 export function areAllFinishedPlayersDisplayValuesNumeric(game: Game, players: Player[]): boolean {
   // Exclude spectators
   const votingPlayers = players.filter((p) => !p.isSpectator);
+  
+  // If no voting players, return true (nothing to check)
+  if (votingPlayers.length === 0) {
+    return true;
+  }
+  
   return votingPlayers
     .filter((player) => player.status === Status.Finished)
     .every((player) => {

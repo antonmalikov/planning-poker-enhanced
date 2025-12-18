@@ -46,7 +46,8 @@
     "scanToJoin": "Scan to Join",
     "scanInstructions": "Scan this QR code with your phone camera to join the session",
     "orVisit": "Or visit:",
-    "close": "Close"
+    "close": "Close",
+    "qrCodeFor": "QR code for session"
   },
   "CardPicker": {
     "ClickOnTheCardToVote": "Click on the card to vote",
@@ -56,7 +57,8 @@
   "SpectatorMode": {
     "spectatorMode": "Spectator Mode",
     "youAreSpectator": "You are in spectator mode",
-    "spectatorDescription": "You can observe the session but cannot vote"
+    "spectatorDescription": "You can observe the session but cannot vote",
+    "toggleSpectatorMode": "Toggle spectator mode"
   },
   "CreateGame": {
     "newSessionHeader": "Create new session",

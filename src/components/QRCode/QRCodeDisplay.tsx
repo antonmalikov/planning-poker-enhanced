@@ -77,6 +77,8 @@ export const QRCodeDisplay: React.FC<QRCodeDisplayProps> = ({ url, gameName }) =
                   includeMargin={true}
                   bgColor='#ffffff'
                   fgColor='#000000'
+                  aria-label={t('QRCode.qrCodeFor', `QR code for ${gameName}`)}
+                  role='img'
                 />
               </div>
 

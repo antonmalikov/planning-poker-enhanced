@@ -30,6 +30,7 @@ export const SpectatorToggle: React.FC<SpectatorToggleProps> = ({ gameId, curren
           type='button'
           role='switch'
           aria-checked={isSpectator}
+          aria-label={t('SpectatorMode.toggleSpectatorMode', 'Toggle spectator mode')}
           onClick={toggleSpectatorMode}
           className={`relative inline-flex h-5 w-10 items-center rounded-full transition-colors focus:outline-none ${
             isSpectator ? 'bg-purple-500' : 'bg-gray-300 dark:bg-gray-600'
