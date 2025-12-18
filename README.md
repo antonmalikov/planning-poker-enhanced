@@ -26,16 +26,18 @@ Free / Open source Scrum/Agile Planning Poker Web App to estimate user stories f
 1. Create new Session(Fibonacci, Short Fibonacci, TShirt size or Custom)
 2. Join Session
 3. Invite Link
-4. Share User story name/number with others using the board
-5. Session controller - Moderator can Reveal and restart the session anytime.
-6. Reveal - Reveal the cards for all users
-7. Voting status - Users Cards show voting status using emojis - 👍 - Voting Done, 🤔 - Yet to Vote
-8. Remove user from session
-9. Delete Session - Moderator can delete the session completely
-10. Dark Theme Support
-11. Multiple language support
-12. Mobile/Tablet screen support
-13. Timer 
+4. **QR Code Generation** - Quickly share session link via QR code for easy mobile joining
+5. Share User story name/number with others using the board
+6. Session controller - Moderator can Reveal and restart the session anytime.
+7. Reveal - Reveal the cards for all users
+8. Voting status - Users Cards show voting status using emojis - 👍 - Voting Done, 🤔 - Yet to Vote, 👁️ - Spectator
+9. **Spectator Mode** - Join sessions as an observer without participating in voting
+10. Remove user from session
+11. Delete Session - Moderator can delete the session completely
+12. Dark Theme Support
+13. Multiple language support
+14. Mobile/Tablet screen support
+15. Timer 
 
 ## Tech Stack
 
@@ -111,6 +113,32 @@ pre-req
 5. Avoid adding new colors
 6. Use tailwind utility classes for styling the components
 7. Don't duplicate code and use service folder to keep non-component/shared codes
+
+## New Features (Latest Updates)
+
+### QR Code Generation
+
+Share your planning poker session instantly with team members using QR codes:
+- Click the "QR Code" button in the game controller
+- Display the QR code on your screen
+- Team members can scan with their phone camera to join instantly
+- Perfect for in-person meetings or screen sharing
+
+### Spectator Mode
+
+Allow team members to observe voting sessions without participating:
+- Toggle spectator mode using the switch in the game controller
+- Spectators see all activity but cannot vote
+- Spectator cards display an eye icon (👁️)
+- Voting calculations automatically exclude spectators
+- Great for stakeholders, new team members, or rotating facilitators
+
+## Documentation
+
+For detailed information, see:
+- [Architecture Documentation](docs/ARCHITECTURE.md) - Complete system design with diagrams
+- [Features Overview](docs/FEATURES.md) - Detailed feature descriptions
+- [Deployment Guide](docs/DEPLOYMENT.md) - Step-by-step deployment to your Firebase account
 
 ## Pending features open to development
 
