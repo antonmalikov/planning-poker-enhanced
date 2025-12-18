@@ -26,8 +26,13 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({ game, player, currentPla
       }}
     >
       <div className='text-center -mt-5 mx-auto w-[95%] bg-white dark:bg-gray-900 border-2  border-gray-400 dark:border-gray-700 rounded-2xl flex items-center justify-around px-3 py-1'>
-        <div className='text-center font-semibold text-sm truncate' title={player.name}>
+        <div className='text-center font-semibold text-sm truncate flex items-center gap-1' title={player.name}>
           {player.name}
+          {player.isSpectator && (
+            <span className='text-xs bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 px-1.5 py-0.5 rounded-full' title='Spectator'>
+              👁️
+            </span>
+          )}
         </div>
         {isModerator(game.createdById, currentPlayerId, game.isAllowMembersToManageSession) &&
           player.id !== currentPlayerId && (
@@ -59,6 +64,11 @@ const getCardColor = (game: Game, value: number | undefined): string => {
 };
 
 const getCardValue = (player: Player, game: Game) => {
+  // Spectators always show eye icon
+  if (player.isSpectator) {
+    return '👁️';
+  }
+
   if (game.gameStatus !== Status.Finished) {
     return player.status === Status.Finished ? '👍' : '🤔';
   }

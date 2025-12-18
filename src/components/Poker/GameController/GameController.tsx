@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { AlertDialog } from '../../../components/AlertDialog/AlertDialog';
+import { QRCodeDisplay } from '../../../components/QRCode/QRCodeDisplay';
+import { SpectatorToggle } from '../../../components/SpectatorMode/SpectatorToggle';
 import {
   finishGame,
   removeGame,
@@ -37,19 +39,21 @@ export const GameController: React.FC<GameControllerProps> = ({
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
 
   useEffect(() => {
+    // Filter out spectators when checking if all players have voted
+    const votingPlayers = players.filter((p) => !p.isSpectator);
     if (
       game.autoReveal &&
       game.gameStatus === 'In Progress' &&
-      Array.isArray(players) &&
-      players.length > 0 &&
-      players.every((p: Player) => p.status === Status.Finished)
+      Array.isArray(votingPlayers) &&
+      votingPlayers.length > 0 &&
+      votingPlayers.every((p: Player) => p.status === Status.Finished)
     ) {
       finishGame(game.id);
     }
   }, [
     game.autoReveal,
     game,
-    JSON.stringify(players.map((p) => ({ id: p.id, value: p.value, status: p.status }))),
+    JSON.stringify(players.map((p) => ({ id: p.id, value: p.value, status: p.status, isSpectator: p.isSpectator }))),
   ]);
 
   const onAutoReveal = (value: boolean) => {
@@ -76,6 +80,7 @@ export const GameController: React.FC<GameControllerProps> = ({
   };
 
   const isMod = isModerator(game.createdById, currentPlayerId, game.isAllowMembersToManageSession);
+  const currentPlayer = players.find((p) => p.id === currentPlayerId);
   const timerProps: {
     isMod?: boolean;
     timerVisible?: boolean;
@@ -107,17 +112,21 @@ export const GameController: React.FC<GameControllerProps> = ({
           </span>
           <AverageComponent game={game} players={players} />
         </div>
-        {isMod && (
-          <div
-            className='flex justify-end p-2'
-            title='Auto Reveal when all members finished voting'
-          >
-            <AutoReveal
-              autoReveal={game.autoReveal || false}
-              onAutoReveal={(value) => onAutoReveal(value)}
-            />
-          </div>
-        )}
+        <div className='flex justify-between items-center p-2'>
+          {isMod && (
+            <div title='Auto Reveal when all members finished voting'>
+              <AutoReveal
+                autoReveal={game.autoReveal || false}
+                onAutoReveal={(value) => onAutoReveal(value)}
+              />
+            </div>
+          )}
+          {currentPlayer && (
+            <div className='ml-auto'>
+              <SpectatorToggle gameId={game.id} currentPlayer={currentPlayer} />
+            </div>
+          )}
+        </div>
         {/* Card Content */}
         <div className='flex flex-wrap justify-center gap-6 px-2 pt-8 pb-2'>
           {isMod && (
@@ -173,6 +182,13 @@ export const GameController: React.FC<GameControllerProps> = ({
             testId='invite-button'
             title='Copy invite link'
           />
+          <div className='flex flex-col items-center'>
+            <QRCodeDisplay
+              url={`${window.location.origin}/join/${game.id}`}
+              gameName={game.name}
+            />
+            <span className='text-xs mt-1'>{t('GameController.qrCode', 'QR Code')}</span>
+          </div>
           <div className='w-full text-xs mt-2'>
             <label className='font-semibold'>{t('GameController.storyName')}:</label>
             <input
@@ -326,7 +342,9 @@ const AverageComponent: React.FC<{ game: Game; players: Player[] }> = ({ game, p
 };
 
 export function areAllFinishedPlayersDisplayValuesNumeric(game: Game, players: Player[]): boolean {
-  return players
+  // Exclude spectators
+  const votingPlayers = players.filter((p) => !p.isSpectator);
+  return votingPlayers
     .filter((player) => player.status === Status.Finished)
     .every((player) => {
       const value =
@@ -344,7 +362,9 @@ export const getAverage = (game: Game, players: Player[]): number => {
   let values = 0;
   let numberOfPlayersPlayed = 0;
   const cards = game.cards;
-  players.forEach((player) => {
+  // Exclude spectators from average calculation
+  const votingPlayers = players.filter((p) => !p.isSpectator);
+  votingPlayers.forEach((player) => {
     const value =
       game.gameType === GameType.Custom
         ? Number(cards.find((card) => card.value === player.value)?.displayValue)

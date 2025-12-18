@@ -97,7 +97,9 @@ export const updateStoryName = async (gameId: string, storyName: string) => {
 
 export const getGameStatus = (players: Player[]): Status => {
   let numberOfPlayersPlayed = 0;
-  players.forEach((player: Player) => {
+  // Exclude spectators from game status calculation
+  const votingPlayers = players.filter((p) => !p.isSpectator);
+  votingPlayers.forEach((player: Player) => {
     if (player.status === Status.Finished) {
       numberOfPlayersPlayed++;
     }

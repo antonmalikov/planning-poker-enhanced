@@ -16,8 +16,11 @@ interface CardPickerProps {
 export const CardPicker: React.FC<CardPickerProps> = ({ game, players, currentPlayerId }) => {
   const { t } = useTranslation();
   const [randomEmoji, setRandomEmoji] = useState(getRandomEmoji);
+  const currentPlayer = players.find((p) => p.id === currentPlayerId);
+  const isSpectator = currentPlayer?.isSpectator || false;
+
   const playPlayer = (gameId: string, playerId: string, card: CardConfig) => {
-    if (game.gameStatus !== Status.Finished) {
+    if (game.gameStatus !== Status.Finished && !isSpectator) {
       updatePlayerValue(gameId, playerId, card.value, randomEmoji);
     }
   };
@@ -33,9 +36,16 @@ export const CardPicker: React.FC<CardPickerProps> = ({ game, players, currentPl
   return (
     <div className='w-full max-w-full animate-fade-in-down'>
       <div className='text-center text-lg font-semibold my-4'>
-        {game.gameStatus !== Status.Finished
-          ? t('CardPicker.ClickOnTheCardToVote')
-          : t('CardPicker.SessionNotReadyForVotingWaitForModeratorToStart')}
+        {isSpectator ? (
+          <span className='flex items-center justify-center gap-2'>
+            <span className='text-2xl'>👁️</span>
+            {t('CardPicker.SpectatorMode', 'Spectator Mode - You are observing only')}
+          </span>
+        ) : game.gameStatus !== Status.Finished ? (
+          t('CardPicker.ClickOnTheCardToVote')
+        ) : (
+          t('CardPicker.SessionNotReadyForVotingWaitForModeratorToStart')
+        )}
       </div>
       <div className='flex flex-wrap justify-center gap-6 py-4 '>
         {cards.map((card: CardConfig, index) => {
@@ -61,7 +71,7 @@ export const CardPicker: React.FC<CardPickerProps> = ({ game, players, currentPl
                   : 'shadow-md scale-100'
               }
               ${
-                game.gameStatus === Status.Finished
+                game.gameStatus === Status.Finished || isSpectator
                   ? 'pointer-events-none opacity-50 cursor-not-allowed'
                   : ''
               }

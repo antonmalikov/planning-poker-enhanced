@@ -22,6 +22,7 @@
     "delete": "Delete",
     "exit": "Exit",
     "invite": "Invite",
+    "qrCode": "QR Code",
     "storyName": "Story Name",
     "enterStoryName": "Enter story name or number",
     "inviteLinkCopied": "Invite Link copied to clipboard",
@@ -39,9 +40,23 @@
       "closeTimer": "Close Timer"
     }
   },
+  "QRCode": {
+    "qrCode": "QR Code",
+    "showQRCode": "Show QR Code",
+    "scanToJoin": "Scan to Join",
+    "scanInstructions": "Scan this QR code with your phone camera to join the session",
+    "orVisit": "Or visit:",
+    "close": "Close"
+  },
   "CardPicker": {
     "ClickOnTheCardToVote": "Click on the card to vote",
-    "SessionNotReadyForVotingWaitForModeratorToStart": "Session not ready for Voting! Wait for moderator to start"
+    "SessionNotReadyForVotingWaitForModeratorToStart": "Session not ready for Voting! Wait for moderator to start",
+    "SpectatorMode": "Spectator Mode - You are observing only"
+  },
+  "SpectatorMode": {
+    "spectatorMode": "Spectator Mode",
+    "youAreSpectator": "You are in spectator mode",
+    "spectatorDescription": "You can observe the session but cannot vote"
   },
   "CreateGame": {
     "newSessionHeader": "Create new session",
