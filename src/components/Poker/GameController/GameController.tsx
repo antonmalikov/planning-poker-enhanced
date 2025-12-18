@@ -201,6 +201,10 @@ export const GameController: React.FC<GameControllerProps> = ({
             />
           </div>
         </div>
+        {/* Vote Distribution */}
+        {game.gameStatus === Status.Finished && (
+          <VoteDistribution game={game} players={players} />
+        )}
       </div>
       {/* Snackbar/Alert */}
       {showCopiedMessage && (
@@ -388,4 +392,87 @@ export const getAverage = (game: Game, players: Player[]): number => {
     }
   });
   return Math.round((values / numberOfPlayersPlayed) * 100) / 100;
+};
+
+interface VoteDistributionProps {
+  game: Game;
+  players: Player[];
+}
+
+const VoteDistribution: React.FC<VoteDistributionProps> = ({ game, players }) => {
+  const { t } = useTranslation();
+  
+  // Get voting players (exclude spectators)
+  const votingPlayers = players.filter((p) => !p.isSpectator && p.status === Status.Finished);
+  
+  if (votingPlayers.length === 0) {
+    return null;
+  }
+
+  // Count votes by value
+  const voteCounts: { [key: string]: { count: number; displayValue: string; actualValue: number } } = {};
+  
+  votingPlayers.forEach((player) => {
+    if (player.value !== undefined && player.value >= 0) {
+      const card = game.cards?.find((c) => c.value === player.value);
+      const displayValue = card?.displayValue || player.value.toString();
+      const key = displayValue;
+      
+      if (!voteCounts[key]) {
+        voteCounts[key] = { count: 0, displayValue, actualValue: player.value };
+      }
+      voteCounts[key].count++;
+    }
+  });
+
+  // Convert to array and sort by value
+  const voteArray = Object.values(voteCounts).sort((a, b) => {
+    // Sort by actual numeric value if possible
+    const aNum = typeof a.actualValue === 'number' ? a.actualValue : 0;
+    const bNum = typeof b.actualValue === 'number' ? b.actualValue : 0;
+    return aNum - bNum;
+  });
+
+  const maxCount = Math.max(...voteArray.map(v => v.count));
+
+  return (
+    <div className='px-4 pb-4 pt-2'>
+      <div className='text-xs font-semibold mb-2 text-gray-700 dark:text-gray-300'>
+        {t('GameController.voteDistribution', 'Vote Distribution')}
+      </div>
+      <div className='space-y-2'>
+        {voteArray.map((vote) => {
+          const percentage = (vote.count / votingPlayers.length) * 100;
+          const barWidth = (vote.count / maxCount) * 100;
+          const isLeading = vote.count === maxCount;
+          
+          return (
+            <div key={vote.displayValue} className='flex items-center gap-2'>
+              <div className='text-xs font-medium w-8 text-right text-gray-700 dark:text-gray-300'>
+                {vote.displayValue}
+              </div>
+              <div className='flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-5 relative overflow-hidden'>
+                <div
+                  className={`h-full rounded-full transition-all duration-300 ${
+                    isLeading 
+                      ? 'bg-gradient-to-r from-green-400 to-green-500 dark:from-green-500 dark:to-green-600' 
+                      : 'bg-gradient-to-r from-blue-400 to-blue-500 dark:from-blue-500 dark:to-blue-600'
+                  }`}
+                  style={{ width: `${barWidth}%` }}
+                />
+                <div className='absolute inset-0 flex items-center justify-center'>
+                  <span className='text-xs font-semibold text-gray-800 dark:text-gray-100 mix-blend-difference'>
+                    {vote.count} {vote.count === 1 ? 'vote' : 'votes'}
+                  </span>
+                </div>
+              </div>
+              <div className='text-xs font-medium w-12 text-gray-600 dark:text-gray-400'>
+                {percentage.toFixed(0)}%
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
 };

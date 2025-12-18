@@ -29,6 +29,7 @@
     "areYouSureDelete": "Are you sure? This will delete this session and remove all players.",
     "inProgress": "In Progress",
     "finished": "Finished",
+    "voteDistribution": "Vote Distribution",
     "Timer": {
       "soundDisabledMod": "Enable sound",
       "soundEnabledMod": "Disable sound",
