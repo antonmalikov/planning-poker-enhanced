@@ -6,6 +6,7 @@ export interface Player {
   status: Status;
   value?: number;
   emoji?: string;
+  isSpectator?: boolean;
 }
 
 export interface PlayerGame {

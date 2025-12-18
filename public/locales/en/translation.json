@@ -22,12 +22,14 @@
     "delete": "Delete",
     "exit": "Exit",
     "invite": "Invite",
+    "qrCode": "QR Code",
     "storyName": "Story Name",
     "enterStoryName": "Enter story name or number",
     "inviteLinkCopied": "Invite Link copied to clipboard",
     "areYouSureDelete": "Are you sure? This will delete this session and remove all players.",
     "inProgress": "In Progress",
     "finished": "Finished",
+    "voteDistribution": "Vote Distribution",
     "Timer": {
       "soundDisabledMod": "Enable sound",
       "soundEnabledMod": "Disable sound",
@@ -39,9 +41,25 @@
       "closeTimer": "Close Timer"
     }
   },
+  "QRCode": {
+    "qrCode": "QR Code",
+    "showQRCode": "Show QR Code",
+    "scanToJoin": "Scan to Join",
+    "scanInstructions": "Scan this QR code with your phone camera to join the session",
+    "orVisit": "Or visit:",
+    "close": "Close",
+    "qrCodeFor": "QR code for session"
+  },
   "CardPicker": {
     "ClickOnTheCardToVote": "Click on the card to vote",
-    "SessionNotReadyForVotingWaitForModeratorToStart": "Session not ready for Voting! Wait for moderator to start"
+    "SessionNotReadyForVotingWaitForModeratorToStart": "Session not ready for Voting! Wait for moderator to start",
+    "SpectatorMode": "Spectator Mode - You are observing only"
+  },
+  "SpectatorMode": {
+    "spectatorMode": "Spectator Mode",
+    "youAreSpectator": "You are in spectator mode",
+    "spectatorDescription": "You can observe the session but cannot vote",
+    "toggleSpectatorMode": "Toggle spectator mode"
   },
   "CreateGame": {
     "newSessionHeader": "Create new session",
